@@ -1,6 +1,24 @@
 # Question Refiner · 问题优化与完善助手
 
-本技能通过逐轮澄清，补全提问中的背景、关键条件和输出要求，并生成可以直接交给其他 AI 使用的优化版本。
+本技能会通过简短的多轮澄清，补足提问中的背景、关键条件和输出要求，再将原问题整理成可以直接交给其他 AI 使用的提示词。它只负责优化问题，不替用户回答原问题。
+
+## 示例
+
+**用户：** 蓝牙耳机哪款好用？
+
+**助手（第 1 轮）：** 我先确认两点：主要在哪些场景使用、预算大约多少？你用什么手机，最看重耳机的哪项表现？
+
+**用户：** 通勤用，预算 1000 元以内，手机是 iPhone。最看重降噪和听歌体验。
+
+**助手（第 2 轮）：** 收到：iPhone、通勤、预算 1000 元以内，优先考虑降噪和音乐体验。你希望比较中国市场当前在售的型号和价格吗？如果信息已经够了，也可以直接让我生成。
+
+**用户：** 希望查当前在售型号和价格，信息够了。
+
+**助手生成的三种提问：**
+
+- **极简版：** 请推荐适用于 iPhone 通勤、预算不超过 1000 元，并优先考虑主动降噪和音乐体验的蓝牙耳机。
+- **简洁增强版：** 请比较中国市场目前在售、适用于 iPhone 通勤且价格不超过 1000 元的蓝牙耳机，优先考虑主动降噪与音乐体验，并说明主要取舍。
+- **详细完整版：** 请根据中国市场当前可购买的信息，为 iPhone 用户挑选适合通勤的蓝牙耳机，预算不超过 1000 元，优先考虑主动降噪和音乐表现。比较至少 3 款符合条件的型号，并用表格列出当前价格范围、降噪表现、音质特点、佩戴舒适度、通话表现和主要优缺点；注明信息来源和查询日期。最后给出不同偏好下的选择建议；如果价格或性能数据无法确认，请明确标注不确定之处，不要编造。
 
 ## 功能
 
@@ -8,7 +26,7 @@
 - 区分核心必问信息与可选补充信息。
 - 接收用户随时新增的想法、修改条件与跳过指令，并检查信息冲突。
 - 生成极简版、简洁增强版、详细完整版三种提问。
-- 只优化提问，不解答原问题；不编造用户背景。
+- 不编造用户背景；遇到有害内容时拒绝优化。
 
 ## 文件
 
@@ -20,26 +38,23 @@ question-refiner/
     └── Question Refiner.txt        # 完整原始指令文本
 ```
 
-`SKILL.md` 使用标准技能格式，包含技能名称、触发描述和完整指令正文。原始文本也单独保留，方便手动使用。示例展示的是信息收集阶段，并非完整对话记录。
+## 安装到不同 Agent
 
-## 安装到 Codex
+仓库根目录的 `SKILL.md` 是标准 Agent Skill。GitHub CLI 的 `gh skill` 命令可以把仓库里的技能安装到多种 Agent；请使用支持 `gh skill` 的 GitHub CLI 版本（v2.90.0 或更新版本）。因为本仓库的 `SKILL.md` 位于根目录，命令中用 `SKILL.md` 指定该文件。
 
-在 PowerShell 中运行以下命令，将技能安装到当前用户的 Codex 技能目录：
+在终端运行对应命令。`--scope user` 表示安装到当前用户的全局技能目录；去掉它或改为 `--scope project`，即可按 GitHub CLI 的默认项目范围安装。
 
-```powershell
-$skillsRoot = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex\skills' }
-New-Item -ItemType Directory -Force -Path $skillsRoot | Out-Null
-git clone https://github.com/Tintinding/question-refiner.git (Join-Path $skillsRoot 'question-refiner')
-```
+| Agent | 安装命令 | 调用方式 |
+| --- | --- | --- |
+| Codex | `gh skill install Tintinding/question-refiner SKILL.md --agent codex --scope user` | `$question-refiner`，或直接描述想优化的问题 |
+| Claude Code | `gh skill install Tintinding/question-refiner SKILL.md --agent claude-code --scope user` | `/question-refiner` |
+| Cursor | `gh skill install Tintinding/question-refiner SKILL.md --agent cursor --scope user` | `/question-refiner`，或在 Agent 对话中描述需求 |
+| Gemini CLI | `gh skill install Tintinding/question-refiner SKILL.md --agent gemini-cli --scope user` | 输入 `/skills list` 确认已加载，然后描述想优化的问题 |
+| GitHub Copilot | `gh skill install Tintinding/question-refiner SKILL.md --agent github-copilot --scope user` | 在支持 Agent Skills 的 Copilot Agent 对话中描述需求 |
 
-随后可以显式调用：
+首次安装遇到提示时，按 CLI 说明确认技能来源。更新技能时，可在支持 `gh skill update` 的版本中运行 `gh skill update question-refiner`。各 Agent 的技能发现和调用能力会随产品版本变化；若没有自动触发，可使用表中的显式调用方式，或查看相应 Agent 的技能列表。
 
-```text
-请用 $question-refiner 帮我优化下面的问题：
-我想比较两种学习方案，怎么选？
-```
-
-如果技能没有出现在当前会话中，请重新启动 Codex 后再试。其他支持 `SKILL.md` 的工具也可以按各自说明加载该技能目录；其安装方法以对应工具的文档为准。
+也可以手动将 `SKILL.md` 放进目标 Agent 支持的技能目录中，或打开 [`original/Question Refiner.txt`](original/Question%20Refiner.txt)，把指令粘贴到支持自定义指令的 AI 设置里。平台专属目录请以其官方文档为准。
 
 ## 交互约定
 
