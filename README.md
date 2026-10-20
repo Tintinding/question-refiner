@@ -1,8 +1,6 @@
 # Question Refiner · 问题优化与完善助手
 
-将模糊、简短或缺少条件的提问，通过逐轮澄清整理成可以直接复制给其他 AI 的提示词。
-
-由 [Tintinding](https://github.com/Tintinding) 在豆包中创建。本仓库提供原始文本及标准 `SKILL.md` 封装。
+本技能通过逐轮澄清，补全提问中的背景、关键条件和输出要求，并生成可以直接交给其他 AI 使用的优化版本。
 
 ## 功能
 
@@ -16,41 +14,38 @@
 
 ```text
 question-refiner/
-├── SKILL.md                       # 标准技能入口，包含名称、触发描述和原始正文
+├── SKILL.md                       # 技能元数据和完整指令
 ├── README.md                      # 本说明
 └── original/
-    └── Question Refiner.txt        # 豆包原稿，按原文件保留
+    └── Question Refiner.txt        # 完整原始指令文本
 ```
 
-`SKILL.md` 仅在原稿前添加 YAML 元数据，正文保留原有规则和交互示例，未重新设计工作流。原稿末尾是信息收集阶段的部分示例，不是完整对话记录。
+`SKILL.md` 使用标准技能格式，包含技能名称、触发描述和完整指令正文。原始文本也单独保留，方便手动使用。示例展示的是信息收集阶段，并非完整对话记录。
 
-## 使用
+## 安装到 Codex
 
-### 在豆包或其他支持自定义指令的 AI 中
+在 PowerShell 中运行以下命令，将技能安装到当前用户的 Codex 技能目录：
 
-打开 [`original/Question Refiner.txt`](original/Question%20Refiner.txt)，将适用的介绍与指令填入平台对应的自定义助手或技能配置字段，再提交待优化的问题。不同平台的字段和技能机制可能不同。
-
-### 在支持 SKILL.md 的工具中
-
-将本仓库文件夹命名为 `question-refiner`，放到目标工具的技能目录。以支持本地技能的 Codex 为例，目录结构为：
-
-```text
-~/.codex/skills/question-refiner/SKILL.md
+```powershell
+$skillsRoot = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex\skills' }
+New-Item -ItemType Directory -Force -Path $skillsRoot | Out-Null
+git clone https://github.com/Tintinding/question-refiner.git (Join-Path $skillsRoot 'question-refiner')
 ```
 
-然后在支持显式技能调用的环境中输入：
+随后可以显式调用：
 
 ```text
 请用 $question-refiner 帮我优化下面的问题：
 我想比较两种学习方案，怎么选？
 ```
 
-也可以直接复制技能正文作为自定义指令使用。标准封装已通过格式校验；未宣称在所有平台完成行为测试。
+如果技能没有出现在当前会话中，请重新启动 Codex 后再试。其他支持 `SKILL.md` 的工具也可以按各自说明加载该技能目录；其安装方法以对应工具的文档为准。
 
 ## 交互约定
 
-你可以补充新想法、修改条件，说“忽略这个”跳过某项，或说“停止收集”直接生成结果。已主动提供的信息应随问题一起提交，便于减少澄清轮次。
+你可以随时补充想法或修改条件，说“忽略这个”跳过某项，也可以说“停止收集”直接生成结果。发起请求时附上已知背景和条件，有助于减少澄清轮次。
 
 ## 授权
 
 本次发布未指定开源许可证。公开可见不等于授予开放式再分发或商用许可；需要额外使用授权时，请联系作者。
+
