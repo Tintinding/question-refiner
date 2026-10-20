@@ -64,13 +64,7 @@ WorkBuddy 支持导入本地 Skill 技能包。先从 [GitHub 下载仓库 ZIP](
 
 ### 豆包自定义智能体
 
-豆包也能创建和定制智能体。打开豆包的智能体创建/定制界面，把 [`original/Question Refiner.txt`](original/Question%20Refiner.txt) 的完整内容粘贴到描述智能体背景或工作方式的设置中，保存后打开该智能体即可使用。豆包的智能体设置和上面的 GitHub CLI 安装方式不同；具体入口名称以你当前使用的豆包版本为准。[豆包官方功能介绍](https://www.doubao.com/legal/feature_intro)说明可以定制智能体的说话风格、技能和背景。
-
-### 腾讯 WorkBuddy
-
-WorkBuddy 支持导入本地 Skill 技能包。先从 [GitHub 下载仓库 ZIP](https://github.com/Tintinding/question-refiner/archive/refs/heads/main.zip)，解压后新建 `question-refiner` 文件夹，将根目录的 `SKILL.md` 放入该文件夹并压缩；在 WorkBuddy 的「技能」页面选择「上传技能」，导入该 ZIP 后启用即可。[WorkBuddy 官方技能文档](https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)介绍了上传本地技能包的步骤。
-
-也可以手动将 `SKILL.md` 放进目标 Agent 支持的技能目录中，或打开 [`original/Question Refiner.txt`](original/Question%20Refiner.txt)，把指令粘贴到支持自定义指令的 AI 设置里。平台专属目录请以其官方文档为准。
+豆包也能创建和定制智能体。打开豆包的智能体创建/定制界面，把 [`original/Question Refiner.txt`](original/Question%20Refiner.txt) 的完整内容粘贴到描述智能体背景或工作方式的设置中，保存后打开该智能体即可使用。豆包的智能体设置和上面的 GitHub CLI 安装方式不同；具体入口名称以你当前使用的豆包版本为准。[豆包官方功能介绍](https://www.doubao.com/legal/feature_intro)说明可以定制智能体的说话风格、技能和背景。也可以手动将 `SKILL.md` 放进目标 Agent 支持的技能目录中，或打开 [`original/Question Refiner.txt`](original/Question%20Refiner.txt)，把指令粘贴到支持自定义指令的 AI 设置里。平台专属目录请以其官方文档为准。
 
 ## 交互约定
 
