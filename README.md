@@ -51,8 +51,13 @@ question-refiner/
 | Cursor | `gh skill install Tintinding/question-refiner SKILL.md --agent cursor --scope user` | `/question-refiner`，或在 Agent 对话中描述需求 |
 | Gemini CLI | `gh skill install Tintinding/question-refiner SKILL.md --agent gemini-cli --scope user` | 输入 `/skills list` 确认已加载，然后描述想优化的问题 |
 | GitHub Copilot | `gh skill install Tintinding/question-refiner SKILL.md --agent github-copilot --scope user` | 在支持 Agent Skills 的 Copilot Agent 对话中描述需求 |
+| Qwen Code | `gh skill install Tintinding/question-refiner SKILL.md --agent qwen-code --scope user` | `/question-refiner`，或直接描述想优化的问题 |
+| Kimi Code CLI | `gh skill install Tintinding/question-refiner SKILL.md --agent kimi-cli --scope user` | `/skill:question-refiner` |
+| TRAE CN | `gh skill install Tintinding/question-refiner SKILL.md --agent trae-cn --scope user` | 在 Agent 对话中描述想优化的问题 |
+| 腾讯云 CodeBuddy | `gh skill install Tintinding/question-refiner SKILL.md --agent codebuddy --scope user` | 在 Agent 对话中描述想优化的问题 |
+| Qoder | `gh skill install Tintinding/question-refiner SKILL.md --agent qoder --scope user` | 在 Agent 对话中描述想优化的问题 |
 
-首次安装遇到提示时，按 CLI 说明确认技能来源。更新技能时，可在支持 `gh skill update` 的版本中运行 `gh skill update question-refiner`。各 Agent 的技能发现和调用能力会随产品版本变化；若没有自动触发，可使用表中的显式调用方式，或查看相应 Agent 的技能列表。
+GitHub CLI 当前支持表中这些 Agent 标识。首次安装遇到提示时，按 CLI 说明确认技能来源。更新技能时，可在支持 `gh skill update` 的版本中运行 `gh skill update question-refiner`。不同 Agent 的技能发现和显式调用方式可能随版本变化；若未自动触发，请在该 Agent 的技能列表中确认安装状态。
 
 也可以手动将 `SKILL.md` 放进目标 Agent 支持的技能目录中，或打开 [`original/Question Refiner.txt`](original/Question%20Refiner.txt)，把指令粘贴到支持自定义指令的 AI 设置里。平台专属目录请以其官方文档为准。
 
